@@ -49,7 +49,7 @@ displays=""
 while read id
 do
     displays="$displays $id"
-done < <(xvinfo | sed -n 's/^screen #\([0-9]\+\)$/\1/p')
+done < <(xvinfo 2> /dev/null | sed -n 's/^screen #\([0-9]\+\)$/\1/p')
 
 
 # Detect screensaver been used (xscreensaver, kscreensaver or none)
@@ -245,3 +245,4 @@ done
 
 
 exit 0
+
