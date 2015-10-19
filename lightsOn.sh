@@ -31,7 +31,9 @@
 # DEBUG=0 for no output
 # DEBUG=1 for sleep prints
 # DEBUG=2 for everything
-DEBUG=1
+if [[ -z $DEBUG ]]; then
+	DEBUG=0
+fi
 
 # this is actually the minimum allowed dynamic delay; also the default (if something fails)
 default_sleep_delay=50
