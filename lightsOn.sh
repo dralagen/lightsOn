@@ -61,8 +61,13 @@ else
     if [ $screensaver -ge 1 ]; then
         screensaver=kscreensaver
     else
-        screensaver=None
-        echo "No screensaver detected"
+        screensaver=`pgrep -l xautolock | grep -wc xautolock`
+        if [ $screensaver -ge 1 ]; then
+            screensaver=xautolock
+        else
+            screensaver=None
+            echo "No screensaver detected"
+        fi
     fi
 fi
 
@@ -196,6 +201,9 @@ delayScreensaver()
         xscreensaver-command -deactivate > /dev/null
     elif [ "$screensaver" == "kscreensaver" ]; then
         qdbus org.freedesktop.ScreenSaver /ScreenSaver SimulateUserActivity > /dev/null
+    elif [ "$screensaver" == "xautolock" ]; then
+        xautolock -disable
+        xautolock -enable
     fi
 
 
