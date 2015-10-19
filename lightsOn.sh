@@ -52,23 +52,12 @@ do
 done < <(xvinfo 2> /dev/null | sed -n 's/^screen #\([0-9]\+\)$/\1/p')
 
 
-# Detect screensaver been used (xscreensaver, kscreensaver or none)
-screensaver=`pgrep -l xscreensaver | grep -wc xscreensaver`
+screensaver=`pgrep -l xautolock | grep -wc xautolock`
 if [ $screensaver -ge 1 ]; then
-    screensaver=xscreensaver
+    screensaver=xautolock
 else
-    screensaver=`pgrep -l kscreensaver | grep -wc kscreensaver`
-    if [ $screensaver -ge 1 ]; then
-        screensaver=kscreensaver
-    else
-        screensaver=`pgrep -l xautolock | grep -wc xautolock`
-        if [ $screensaver -ge 1 ]; then
-            screensaver=xautolock
-        else
-            screensaver=None
-            echo "No screensaver detected"
-        fi
-    fi
+    screensaver=None
+    echo "No screensaver detected"
 fi
 
 checkDelayProgs()
@@ -197,11 +186,7 @@ delayScreensaver()
 {
 
     # reset inactivity time counter so screensaver is not started
-    if [ "$screensaver" == "xscreensaver" ]; then
-        xscreensaver-command -deactivate > /dev/null
-    elif [ "$screensaver" == "kscreensaver" ]; then
-        qdbus org.freedesktop.ScreenSaver /ScreenSaver SimulateUserActivity > /dev/null
-    elif [ "$screensaver" == "xautolock" ]; then
+    if [ "$screensaver" == "xautolock" ]; then
         xautolock -disable
         xautolock -enable
     fi
@@ -216,10 +201,7 @@ delayScreensaver()
 
 }
 
-
-
 delay=$1
-
 
 # If argument empty, use 50 seconds as default.
 if [ -z "$1" ];then
