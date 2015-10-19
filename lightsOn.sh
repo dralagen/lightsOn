@@ -307,10 +307,10 @@ _sleep()
 	log "sleeping for $delay"
 	sleep $delay
     else
-	if [ "$(cat /sys/class/power_supply/AC/online)" == "1" ]; then
-	    system_sleep_delay=$(gsettings get org.gnome.settings-daemon.plugins.power sleep-display-ac 2>/dev/null)
+	if [ "$(cat /sys/class/power_supply/AC/online 2>/dev/null)" == "1" ]; then
+	    system_sleep_delay=$(gsettings get org.cinnamon.settings-daemon.plugins.power sleep-display-ac 2>/dev/null)
 	else
-	    system_sleep_delay=$(gsettings get org.gnome.settings-daemon.plugins.power sleep-display-battery 2>/dev/null)
+	    system_sleep_delay=$(gsettings get org.cinnamon.settings-daemon.plugins.power sleep-display-battery 2>/dev/null)
 	fi
 	if [ "$(echo $system_sleep_delay | egrep -c "^[0-9]+$")" == "1" ]; then
 	    if [ $system_sleep_delay -le $(($default_sleep_delay+5)) ]; then
